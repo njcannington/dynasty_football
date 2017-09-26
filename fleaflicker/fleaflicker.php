@@ -1,5 +1,4 @@
 <?php
-
 namespace Fleaflicker;
 
 class Fleaflicker
