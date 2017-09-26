@@ -30,6 +30,7 @@ class Team extends Fleaflicker
         $html = preg_replace("#<[^>]+>#", "", $html);
         $html = str_replace("&#39;", "'", $html);
         $html = str_replace("PUP", "", $html);
+        $html = str_replace("OUT", "", $html);
 
         return $html;
     }
