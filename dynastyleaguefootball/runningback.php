@@ -1,9 +1,9 @@
 <?php
 namespace DynastyLeagueFootball\Rankings;
 
-use DynastyLeagueFootball\Rankings;
+use DynastyLeagueFootball\DynastyLeagueFootball;
 
-class Runningback extends Rankings
+class Runningback extends DynastyLeagueFootball
 {
-    const URL = BASE_URL."/rankings/rb-rankings";
+    const URL = parent::BASE_URL."/rankings/rb-rankings";
 }

@@ -5,5 +5,5 @@ use DynastyLeagueFootball\DynastyLeagueFootball;
 
 class Widereceiver extends DynastyLeagueFootball
 {
-    const URL = BASE_URL."/rankings/qb-rankings";
+    const URL = parent::BASE_URL."/rankings/qb-rankings";
 }

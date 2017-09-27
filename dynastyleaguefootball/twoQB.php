@@ -5,5 +5,5 @@ use DynastyLeagueFootball\DynastyLeagueFootball;
 
 class TwoQb extends DynastyLeagueFootball
 {
-    const URL = BASE_URL."/dynasty-2qb-rankings";
+    const URL = parent::BASE_URL."/dynasty-2qb-rankings";
 }
