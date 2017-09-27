@@ -1,31 +1,46 @@
 <?php
 namespace DynastyLeagueFootball;
 
+use Scraper\Scraper;
+
 abstract class DynastyLeagueFootball
 {
     const BASE_URL = "https://dynastyleaguefootball.com";
-    protected $data;
+    const TABLE_OFFSET = 1; //DLF currently stores rankings in the 1st table
+    const HEADERS = ["Name", "AVG"]; //labels used by DLF and only data we need
+    const COOKIE = ""; //ADD DLF WORDPRESS COOKIE HERE
+    protected $rankings;
 
     public function __construct()
     {
-        $this->data = self::fetch(static::URL);
+        $html = Scraper::fetchHTML(static::URL, self::COOKIE);
+        $table = Scraper::fetchTable($html, self::TABLE_OFFSET);
+        $headers = Scraper::fetchTableHeaders($table);
+        $details = Scraper::fetchTableDetails($table);
+        $this->rankings = self::filterRankings($headers, $details);
     }
 
-    protected static function fetch($url)
+    protected static function getHeaderKeys($headers)
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_COOKIE, 'ADD COOKIE HERE');
-        $data = curl_exec($ch);
-        curl_close($ch);
+        foreach (self::HEADERS as $header) {
+            $keys[] = array_search($header, $headers);
+        }
 
-        return $data;
+        return $keys;
     }
 
-
-    public function get($property)
+    protected static function filterRankings($headers, $details)
     {
-        return $this->$property;
+        $keys = self::getHeaderKeys($headers);
+        foreach ($details as $detail) {
+            $rankings[$detail[$keys[0]]] = $detail[$keys[1]];
+        }
+
+        return $rankings;
+    }
+
+    public function getRankings()
+    {
+        return $this->rankings;
     }
 }
