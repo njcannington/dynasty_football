@@ -5,8 +5,44 @@ use DomDocument;
 
 class Scraper
 {
+    protected $table_headers;
+    protected $dom;
+
+    public function __construct()
+    {
+        $this->dom = Scraper::newDom($this->url, static::COOKIE);
+        $this->setTableHeaders();
+    }
+
+    protected function setTableHeaders()
+    {
+        $headers = static::HEADER_LOCATION;
+        $keys = array_keys($headers);
+        for ($i = 0; $i < count($headers); $i++) {
+            $this->dom = $this->dom->getElementsByTagName($keys[$i])->item($headers[$keys[$i]]);
+        }
+        foreach ($this->dom->getElementsByTagName(static::HEADER_ELEMENT) as $header) {
+            $this->table_headers[] = trim($header->textContent);
+        }
+    }
+
+    public function getTableHeaders()
+    {
+        return $this->table_headers;
+    }
+
+    protected static function newDom($url, $cookie)
+    {
+        $html = self::fetchHTML($url, $cookie = null);
+        $dom = new DomDocument();
+        libxml_use_internal_errors(true); //
+        $dom->loadHTML($html);
+
+        return $dom;
+    }
+
     //returns HTML from $url
-    public static function fetchHTML($url, $cookie = null)
+    protected static function fetchHTML($url, $cookie = null)
     {
 
         $ch = curl_init();
@@ -19,49 +55,5 @@ class Scraper
         curl_close($ch);
 
         return $data;
-    }
-
-    //returns HTML within <table> tags. Use table number if more than one table.
-    public static function fetchTable($html, $table_number = 1)
-    {
-        $html_array = explode("<table", $html);
-        $table = $html_array[$table_number];
-        $table_array = explode("</table", $table);
-
-        return "<table{$table_array[0]}</table>";
-    }
-
-    public static function fetchTableHeaders($table)
-    {
-        $dom = self::newDom($table);
-        foreach ($dom->getElementsbyTagName('th') as $header) {
-            $headers[] = trim($header->textContent);
-        }
-
-        return $headers;
-    }
-
-    public static function fetchTableDetails($table)
-    {
-        $i = 0;
-        $ii = 0;
-        $headers = self::fetchTableHeaders($table);
-        $dom = self::newDom($table);
-        foreach ($dom->getElementsbyTagName('td') as $detail) {
-            $details[$ii][] = trim($detail->textContent);
-            $i = $i + 1;
-            $ii = $i % count($headers) == 0 ? $ii + 1 : $ii;
-        }
-
-        return $details;
-    }
-
-    public static function newDom($html)
-    {
-        $dom = new DomDocument();
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($html);
-
-        return $dom;
     }
 }
