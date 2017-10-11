@@ -1,7 +1,7 @@
 <?php
-namespace Scraper\DynastyLeagueFootball;
+namespace Lib\Scraper\DynastyLeagueFootball;
 
-use Scraper\DynastyLeagueFootball\DynastyLeagueFootball;
+use Lib\Scraper\DynastyLeagueFootball\DynastyLeagueFootball;
 
 class Top200 extends DynastyLeagueFootball
 {
