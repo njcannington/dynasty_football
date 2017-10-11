@@ -24,6 +24,15 @@ class Request
         $this->view = $pieces["view"];
     }
 
+    public function setError()
+    {
+        $this->path = "/";
+        $this->controller_name = "Error";
+        $this->action = "index";
+        $this->namespace = "\\";
+        $this->view = "/error.html";
+    }
+
     public function getPath()
     {
         return $this->path;

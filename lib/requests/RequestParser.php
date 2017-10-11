@@ -44,13 +44,15 @@ class RequestParser
         if (current($this->request) == "index.php") {
             $path = "/";
             $namespace = "\\";
+            $view = "/index/index.html";
         } else {
             $path = "/".ucfirst(current($this->request))."/";
             $namespace = "\\".ucfirst(current($this->request))."\\";
+            $view = strtolower($path."index.html");
         }
         $controller = "Index";
         $action = "Index";
-        $view = strtolower($path."index/index.html");
+        
 
         return compact("path", "controller", "action", "namespace", "view");
     }
