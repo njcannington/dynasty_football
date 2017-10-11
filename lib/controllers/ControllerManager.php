@@ -1,5 +1,5 @@
 <?php
-namespace App\Controllers;
+namespace Lib\Controllers;
 
 class ControllerManager
 {
@@ -8,9 +8,9 @@ class ControllerManager
     {
         $path = strtolower($request->getPath());
         $controller_name = $request->getControllerName();
-        $namespace = __NAMESPACE__.$request->getNamespace();
+        $namespace = "App\Controllers".$request->getNamespace();
 
-        require_once(ROOT."/app/controllers".$path.$controller_name."Controller.php");
+        require_once(CONTROLLERS.$path.$controller_name."Controller.php");
         $class = $namespace.$controller_name."Controller";
         return new $class();
     }
