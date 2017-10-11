@@ -50,18 +50,20 @@ class RequestParser
         }
         $controller = "Index";
         $action = "Index";
+        $view = strtolower($path."index/index.html");
 
-        return compact("path", "controller", "action", "namespace");
+        return compact("path", "controller", "action", "namespace", "view");
     }
 
     private function extractFromTwoElements()
     {
-        $path = "/";
-        $controller = ucfirst(current($this->request));
+        $path = "/".current($this->request)."/";
+        $controller = "Index";
         $action = ucfirst(next($this->request));
-        $namespace = "\\";
+        $namespace = str_replace("/", "\\", $path);
+        $view = strtolower($path.$action.".html");
 
-        return compact("path", "controller", "action", "namespace");
+        return compact("path", "controller", "action", "namespace", "view");
     }
 
     private function extractFromManyElements()
@@ -77,8 +79,9 @@ class RequestParser
             $path .= $path_segment."/";
             $namespace .= $path_segment."\\";
         }
+        $view = strtolower($path.$action.".html");
 
-        return compact("path", "controller", "action", "namespace");
+        return compact("path", "controller", "action", "namespace", "view");
     }
 
     public function getPieces()

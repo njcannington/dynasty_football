@@ -11,6 +11,7 @@ class Request
     private $namespace;
     private $controller_name;
     private $action;
+    private $view;
 
     public function __construct($request)
     {
@@ -20,6 +21,7 @@ class Request
         $this->controller_name = $pieces["controller"];
         $this->action = $pieces["action"];
         $this->namespace = $pieces["namespace"];
+        $this->view = $pieces["view"];
     }
 
     public function getPath()
@@ -40,5 +42,10 @@ class Request
     public function getAction()
     {
         return $this->action;
+    }
+
+    public function getView()
+    {
+        return $this->view;
     }
 }

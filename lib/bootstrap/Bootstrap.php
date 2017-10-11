@@ -2,10 +2,10 @@
 namespace Lib\Bootstrap;
 
 require_once(ROOT."/lib/requests/Request.php");
-require_once(ROOT."/app/controllers/ControllerManager.php");
+require_once(ROOT."/lib/controllers/ControllerManager.php");
 
 use Lib\Requests\Request;
-use App\Controllers\ControllerManager;
+use Lib\Controllers\ControllerManager;
 
 class Bootstrap
 {
