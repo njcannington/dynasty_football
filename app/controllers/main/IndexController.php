@@ -1,12 +1,15 @@
 <?php
 namespace App\Controllers\Main;
 
-require_once(ROOT."/app/controllers/Controllers.php");
-
-class IndexController extends \App\Controllers\Controllers
+class IndexController
 {
     public function indexAction()
     {
         return ["main", "index"];
+    }
+
+    public function updateAction()
+    {
+        return ["main", "update"];
     }
 }
