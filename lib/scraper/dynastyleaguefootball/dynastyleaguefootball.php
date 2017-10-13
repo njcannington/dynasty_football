@@ -1,7 +1,11 @@
 <?php
 namespace Lib\Scraper\DynastyLeagueFootball;
 
+require_once("lib/scraper/scraper.php");
+require_once("lib/config/config.php");
+
 use Lib\Scraper\Scraper;
+use Lib\Config\Config;
 
 abstract class DynastyLeagueFootball extends Scraper
 {
@@ -9,8 +13,16 @@ abstract class DynastyLeagueFootball extends Scraper
     const HEADER_LOCATION = ["table" => 0, "thead" => 0];
     const HEADER_ELEMENT = "th";
     const HEADERS = ["Name", "AVG"];
-    const COOKIE = "";
+    protected $cookie;
+
     protected $rankings;
+
+    public function __construct()
+    {
+        $config = Config::getInstance();
+        $this->cookie = $config["dlf"]["cookie"];
+        parent::__construct();
+    }
 
     protected function setTableDetails()
     {

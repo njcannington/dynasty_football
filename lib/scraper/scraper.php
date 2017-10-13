@@ -1,6 +1,8 @@
 <?php
 namespace Lib\Scraper;
 
+require_once("lib/scraper/scraper.php");
+
 use DomDocument;
 
 class Scraper
@@ -68,8 +70,8 @@ class Scraper
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        if (static::COOKIE) {
-            curl_setopt($ch, CURLOPT_COOKIE, static::COOKIE);
+        if ($this->cookie) {
+            curl_setopt($ch, CURLOPT_COOKIE, $this->cookie);
         }
         $data = curl_exec($ch);
         curl_close($ch);

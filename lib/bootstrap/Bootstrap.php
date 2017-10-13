@@ -11,6 +11,7 @@ class Bootstrap
 {
     private $request;
     private $controller;
+    private $config;
 
     public function __construct($request)
     {
@@ -41,5 +42,10 @@ class Bootstrap
     public function getController()
     {
         return $this->controller;
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
     }
 }
