@@ -1,11 +1,12 @@
 <?php
-namespace Fleaflicker;
+namespace Lib\Scraper\Fleaflicker;
 
-use Scraper\Fleaflicker\Fleaflicker;
+use Lib\Scraper\Fleaflicker\Fleaflicker;
 
 class League extends Fleaflicker
 {
     const HEADERS = ["Team", "Owner"];
+    const REMOVE_CHARS = ["</div>-", "*"]; // array to store HTML chars that can muddy up the process
     protected $url;
     protected $league_id;
 
