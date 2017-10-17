@@ -1,9 +1,6 @@
 <?php
 namespace Lib\Scraper\DynastyLeagueFootball;
 
-require_once("lib/scraper/scraper.php");
-require_once("lib/config/config.php");
-
 use Lib\Scraper\Scraper;
 use Lib\Config\Config;
 

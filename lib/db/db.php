@@ -1,8 +1,6 @@
 <?php
 namespace Lib\Db;
 
-require_once(ROOT."/lib/config/config.php");
-
 use Lib\Config\Config;
 use \PDO;
 

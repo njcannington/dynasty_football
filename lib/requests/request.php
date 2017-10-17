@@ -1,8 +1,6 @@
 <?php
 namespace Lib\Requests;
 
-require_once(ROOT."/lib/requests/RequestParser.php");
-
 use Lib\Requests\RequestParser;
 
 class Request
@@ -22,6 +20,12 @@ class Request
         $this->action = $pieces["action"];
         $this->namespace = $pieces["namespace"];
         $this->view = $pieces["view"];
+    }
+
+    public function __get($property)
+    {
+        $method = "get".ucfirst($property);
+        return $this->$method();
     }
 
     public function setError()
