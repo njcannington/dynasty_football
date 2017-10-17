@@ -1,8 +1,6 @@
 <?php
 namespace Lib\Db;
 
-require_once(ROOT."/lib/db/db.php");
-
 class Models
 {
     public $db;

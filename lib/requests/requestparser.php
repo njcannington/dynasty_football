@@ -46,7 +46,7 @@ class RequestParser
             $namespace = "\\";
             $view = "/index/index.html";
         } else {
-            $path = "/".ucfirst(current($this->request))."/";
+            $path = "/".current($this->request)."/";
             $namespace = "\\".ucfirst(current($this->request))."\\";
             $view = strtolower($path."index.html");
         }

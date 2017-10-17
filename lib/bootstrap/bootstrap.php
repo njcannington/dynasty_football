@@ -1,9 +1,6 @@
 <?php
 namespace Lib\Bootstrap;
 
-require_once(ROOT."/lib/requests/Request.php");
-require_once(ROOT."/lib/controllers/ControllerManager.php");
-
 use Lib\Requests\Request;
 use Lib\Controllers\ControllerManager;
 
