@@ -1,6 +1,11 @@
 <?php
 namespace Lib\Db;
 
+require_once(ROOT."/lib/config/config.php");
+
+use Lib\Config\Config;
+use \PDO;
+
 class Db
 {
     private static $instance = null;
@@ -18,8 +23,15 @@ class Db
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-            self::$instance = new PDO("INSERT PDO DATA", $pdo_options);
+            try {
+                $config = Config::getInstance();
+                $db = $config["database"];
+                $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
+                $db_settings = "mysql:host={$db["host"]};dbname={$db["db"]}";
+                self::$instance = new PDO($db_settings, $db["username"], $db["password"], $pdo_options);
+            } catch (PDOException $e) {
+                //insert log here
+            }
         }
         return self::$instance;
     }
