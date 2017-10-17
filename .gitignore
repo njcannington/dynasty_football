@@ -1,3 +1,4 @@
 .*
+config/app.dev.ini
 !/.gitignore
 
