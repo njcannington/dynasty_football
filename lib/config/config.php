@@ -13,12 +13,21 @@ class Config
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            if (strtolower(substr($_SERVER["SERVER_NAME"], -3)) == "dev") {
-                 self::$instance = parse_ini_file(ROOT."/config/app.dev.ini", true);
-            } else {
-                self::$instance = parse_ini_file(ROOT."/config/app.ini", true);
-            }
+            $config = self::getConfig();
+            self::$instance = parse_ini_file($config, true);
         }
         return self::$instance;
+    }
+
+    private static function getConfig()
+    {
+        if ($_SESSION["env"] == "dev") {
+            return ROOT."/config/app.dev.ini";
+        }
+        if (isset($_SERVER["SERVER_NAME"]) && strtolower(substr($_SERVER["SERVER_NAME"], -3)) == "dev") {
+            return ROOT."/config/app.dev.ini";
+        } else {
+            return ROOT."/config/app.ini";
+        }
     }
 }
