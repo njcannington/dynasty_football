@@ -1,87 +1,51 @@
 <?php
 namespace Lib\Scraper;
 
-require_once("lib/scraper/scraper.php");
-
 use DomDocument;
+use DOMXPath;
 
-class Scraper
+class Scraper extends DomDocument
 {
-    protected $table_headers;
-    protected $table_details;
-    protected $filtered_data;
-    protected $dom;
-
-    public function __construct()
-    {
-        $html = $this->fetchHTML();
-        if (method_exists($this, "cleanupHTML")) {
-            $html = $this->cleanupHTML($html);
-        }
-        $this->dom = $this->newDom($html);
-        $this->setTableHeaders();
-        $this->setTableDetails();
-        if (method_exists($this, "removeIncompleteRows")) {
-            $this->removeIncompleteRows();
-        }
-        $this->filterTableData();
-    }
-
-    protected function setTableHeaders()
-    {
-        $headers = static::HEADER_LOCATION;
-        $keys = array_keys($headers);
-        $dom = $this->dom;
-        for ($i = 0; $i < count($headers); $i++) {
-            $dom = $dom->getElementsByTagName($keys[$i])->item($headers[$keys[$i]]);
-        }
-        foreach ($dom->getElementsByTagName(static::HEADER_ELEMENT) as $header) {
-            $this->table_headers[] = trim($header->textContent);
-        }
-    }
-
-    protected function filterTableData()
-    {
-        $headers = static::HEADERS;
-        foreach ($headers as $header) {
-            $header_keys[] = array_search($header, $this->table_headers);
-        }
-        $rows = $this->table_details;
-        $row_count = count($rows);
-        for ($i = 0; $i < $row_count; $i++) {
-            for ($ii = 0; $ii < count($headers); $ii++) {
-                $this->filtered_data[$i][$headers[$ii]] = $rows[$i][$header_keys[$ii]];
-            }
-        }
-    }
+    protected $html_dom;
+    protected $url;
 
     protected function newDom($html)
     {
         $dom = new DomDocument();
         libxml_use_internal_errors(true); //
-        $dom->loadHTML($html);
+        @$dom->loadHTML($html);
 
         return $dom;
     }
 
-    protected function fetchHTML()
+    protected function fetchHTML($url, $cookie = '')
     {
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->url);
+        curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        if ($this->cookie) {
-            curl_setopt($ch, CURLOPT_COOKIE, $this->cookie);
-        }
-        $data = curl_exec($ch);
+        curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+        $html = curl_exec($ch);
         curl_close($ch);
 
-        return $data;
+        return $html;
     }
 
-
-    public function getFilteredData()
+    protected function extractHREFs($xpath)
     {
-        return $this->filtered_data;
+        $dom = new DOMXPath($this->html_dom);
+        foreach ($dom->query($xpath) as $data) {
+            $hrefs[] = $data->getAttribute('href');
+        }
+        return $hrefs;
+    }
+
+    protected function extractTextContent($xpath)
+    {
+        $dom = new DOMXPath($this->html_dom);
+        foreach ($dom->query($xpath) as $data) {
+            $text_content[] = $data->textContent;
+        }
+        return $text_content;
     }
 }
