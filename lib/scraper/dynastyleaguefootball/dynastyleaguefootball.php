@@ -7,30 +7,41 @@ use Lib\Config\Config;
 abstract class DynastyLeagueFootball extends Scraper
 {
     const BASE_URL = "https://dynastyleaguefootball.com";
-    const HEADER_LOCATION = ["table" => 0, "thead" => 0];
-    const HEADER_ELEMENT = "th";
-    const HEADERS = ["Name", "AVG"];
-    protected $cookie;
+    const XPATH_PLAYER_DATA = "//table[@id='avgTable']/tbody/tr/td[2]";
+    const XPATH_AVG_DATA = "//table[@id='avgTable']/tbody/tr/td[@class='darkerCell']";
 
-    protected $rankings;
+    protected $player_names;
+    protected $averages;
+
 
     public function __construct()
     {
+        $url = $this->url;
         $config = Config::getInstance();
-        $this->cookie = $config["dlf"]["cookie"];
-        parent::__construct();
+        $html = self::fetchHTML($this->url, $config["dlf"]["cookie"]);
+        $this->html_dom = self::newDom($html);
+
+        $this->setPlayerNames();
+        $this->setAverages();
     }
 
-    protected function setTableDetails()
+    protected function setPlayerNames()
     {
-        $row = 0;
-        $column = 0;
-        $headers = static::HEADER_LOCATION;
-        $table = $this->dom->getElementsByTagName("table")->item($headers["table"]);
-        foreach ($table->getElementsByTagName('td') as $detail) {
-            $this->table_details[$row][] = trim($detail->textContent);
-            $column++;
-            $row = $column % count($this->table_headers) == 0 ? $row + 1 : $row;
+        $this->player_names = $this->extractTextContent(self::XPATH_PLAYER_DATA);
+    }
+
+    protected function setAverages()
+    {
+        $this->averages = $this->extractTextContent(self::XPATH_AVG_DATA);
+    }
+
+    public function getRankings()
+    {
+        for ($i = 0; $i < count($this->averages); $i++) {
+            $rankings[$i] = ["player" => $this->player_names[$i],
+                             "average" => $this->averages[$i]];
         }
+        return $rankings;
     }
 }
+
