@@ -21,7 +21,7 @@ class Config
 
     private static function getConfig()
     {
-        if ($_SESSION["env"] == "dev") {
+        if (isset($_SESSION["env"]) && $_SESSION["env"] == "dev") {
             return ROOT."/config/app.dev.ini";
         }
         if (isset($_SERVER["SERVER_NAME"]) && strtolower(substr($_SERVER["SERVER_NAME"], -3)) == "dev") {
