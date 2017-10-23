@@ -7,11 +7,10 @@ class IndexController
 {
     public function indexAction()
     {
-        $league = new Fleaflicker\League("167544");
-        $headers = $league::HEADERS;
-        $teams = $league->getFilteredData();
+        $league = new Fleaflicker\League();
+        $teams = $league->getTeams();
         
 
-        return compact("headers", "teams");
+        return compact("teams");
     }
 }

@@ -1,0 +1,16 @@
+<table>
+    <tr>
+        <th>Team</th>
+        <th>Owner</th>
+    </tr>
+<?php
+
+foreach ($data["teams"] as $team) {
+    echo "<tr>";
+    echo "<td><a href='/team?id={$team["id"]}'>{$team["name"]}</a></td>";
+    echo "<td>{$team["owner"]}</td>";
+    echo "<tr>";
+}
+?>
+
+</table>
