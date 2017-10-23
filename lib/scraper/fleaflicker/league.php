@@ -15,8 +15,7 @@ class League extends Fleaflicker
     public function __construct()
     {
         $config = Config::getInstance();
-        $league_id = $config["ff"]["league"];
-        $this->url = parent::BASE_URL."/".$config["ff"]["type"]."/leagues/".$config["ff"]["league"];
+        $this->url = parent::BASE_URL.$config["ff"]["type"]."/leagues/".$config["ff"]["league"];
         parent::__construct();
         $this->setTeamIds();
         $this->setTeamNames();

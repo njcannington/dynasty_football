@@ -2,29 +2,29 @@
 namespace Lib\Scraper\Fleaflicker;
 
 use Lib\Scraper\Fleaflicker\Fleaflicker;
+use Lib\Config\Config;
 
 class Team extends Fleaflicker
 {
-    const HEADERS = ["Name"];
-    const REMOVE_CHARS = ["Q</span>", "SUS</span>", "IR</span>", "PUP</span>", "OUT</span>"];
-    protected $url;
-    protected $team_id;
+    const XPATH_STARTER_DATA = "//table[@id='table_0']/tr/td[1]/div[@class='player']/div[@class='player-name']/a";
+    protected $players = [];
 
-    public function __construct($league_id, $team_id)
+    public function __construct($team_id)
     {
-        $this->url = parent::BASE_URL."/".parent::LEAGUE_TYPE."/leagues/{$league_id}/teams/{$team_id}";
-        $this->league_id = $team_id;
-        parent::__construct(true);
-        $this->extractNames();
+        $config = Config::getInstance();
+        $this->url = parent::BASE_URL.$config["ff"]["type"]."/leagues/".$config["ff"]["league"]."/teams/".$team_id;
+        parent::__construct();
+        $this->setPlayers();
     }
 
-    protected function extractNames()
+    private function setPlayers()
     {
-        foreach ($this->filtered_data as $details) {
-            $bits = explode(" ", $details["Name"]);
-            $name = "{$bits[0]} {$bits[1]}";
-            $names[] = ["Name" => $name];
-        }
-        $this->filtered_data = $names;
+        $this->players = $this->extractTextContent(self::XPATH_STARTER_DATA);
+    }
+
+
+    public function getPlayers()
+    {
+        return $this->players;
     }
 }
