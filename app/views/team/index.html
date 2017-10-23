@@ -1,12 +1,15 @@
 <table>
     <tr>
         <th>Players</th>
+        <th>Position</th>
+        <th>Average</th>
     </tr>
 <?php
-
 foreach ($data["players"] as $player) {
     echo "<tr>";
-    echo "<td>{$player}</td>";
+    echo "<td>{$player["player"]}</td>";
+    echo "<td>{$player["position"]}</td>";
+    echo "<td>{$player["ranking"]}</td>";
     echo "<tr>";
 }
 ?>

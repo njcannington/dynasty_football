@@ -16,4 +16,15 @@ class Ranking extends Models
         $sql = 'INSERT INTO '.$this->table.'('.$columns.') VALUES ("'.$values.'")';
         $this->db->exec($sql);
     }
+
+    public function getRecent($player)
+    {
+        $like_player = str_replace(" ", "%", $player);
+        $sql = 'SELECT * FROM '.$this->table.' WHERE player like "%'.$like_player.'%" ORDER BY updated_at DESC LIMIT 1';
+        foreach ($this->db->query($sql) as $row) {
+            return ["player" => $player,
+                    "ranking" => $row["ranking"],
+                    "position" => $row["position"]];
+        }
+    }
 }
