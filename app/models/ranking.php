@@ -19,8 +19,7 @@ class Ranking extends Models
 
     public function getRecent($player)
     {
-        $like_player = str_replace(" ", "%", $player);
-        $sql = 'SELECT * FROM '.$this->table.' WHERE player like "%'.$like_player.'%" ORDER BY updated_at DESC LIMIT 1';
+        $sql = 'SELECT * FROM '.$this->table.' WHERE player like "%'.str_replace(" ", "%", $player).'%" ORDER BY updated_at DESC LIMIT 1';
         foreach ($this->db->query($sql) as $row) {
             return ["player" => $player,
                     "ranking" => $row["ranking"],

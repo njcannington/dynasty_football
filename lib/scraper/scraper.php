@@ -4,7 +4,7 @@ namespace Lib\Scraper;
 use DomDocument;
 use DOMXPath;
 
-class Scraper extends DomDocument
+abstract class Scraper extends DomDocument
 {
     protected $html_dom;
     protected $url;
