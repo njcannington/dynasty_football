@@ -47,7 +47,7 @@ class League extends Scraper
             return;
         }
         foreach ($team_urls as $team_url) {
-            $this->team_ids[] = self::extractID($team_url);
+            $this->team_ids[] = self::extractTeamID($team_url);
         }
     }
 
@@ -69,7 +69,7 @@ class League extends Scraper
         }
     }
     
-    protected static function extractID($team_url)
+    protected static function extractTeamID($team_url)
     {
         $pieces = explode("/", $team_url);
         $count  = count($pieces);
