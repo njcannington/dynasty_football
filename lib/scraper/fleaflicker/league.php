@@ -1,10 +1,10 @@
 <?php
 namespace Lib\Scraper\Fleaflicker;
 
-use Lib\Scraper\Fleaflicker\Fleaflicker;
+use Lib\Scraper\Scraper;
 use Lib\Config\Config;
 
-class League extends Fleaflicker
+class League extends Scraper
 {
     const XPATH_TEAM_DATA = "//td[contains(@class, 'left')][1]/div[contains(@class, 'league-name')]/a";
     const XPATH_OWNER_DATA = "//td[contains(@class,'right')][1]";
@@ -15,46 +15,65 @@ class League extends Fleaflicker
     public function __construct()
     {
         $config = Config::getInstance();
-        $this->url = parent::BASE_URL.$config["ff"]["type"]."/leagues/".$config["ff"]["league"];
+        $league_type = $config["ff"]["type"];
+        $league_id = $config["ff"]["league"];
+        $this->url = "https://www.fleaflicker.com/".$league_type."/leagues/".$league_id;
         parent::__construct();
-        $this->setTeamIds();
-        $this->setTeamNames();
-        $this->setTeamOwners();
-    }
-
-    private function setTeamIds()
-    {
-        $team_urls = $this->extractHREFs(self::XPATH_TEAM_DATA);
-        foreach ($team_urls as $team_url) {
-            $this->team_ids[] = self::extractID($team_url);
-        }
-    }
-
-    private function setTeamNames()
-    {
-        $this->team_names = $this->extractTextContent(self::XPATH_TEAM_DATA);
-    }
-
-    private function setTeamOwners()
-    {
-        $this->team_owners = $this->extractTextContent(self::XPATH_OWNER_DATA);
-    }
-    
-    private static function extractID($team_url)
-    {
-        $pieces = explode("/", $team_url);
-        $count  = count($pieces);
-
-        return $pieces[$count-1];
     }
 
     public function getTeams()
     {
+        $this->getLeagueData();
         for ($i = 0; $i < count($this->team_ids); $i++) {
             $teams[$i] = ["id" => $this->team_ids[$i],
                         "name" => $this->team_names[$i],
                         "owner" => $this->team_owners[$i]];
         }
         return $teams;
+    }
+
+    protected function getLeagueData()
+    {
+        $this->setTeamIds();
+        $this->setTeamNames();
+        $this->setTeamOwners();
+    }
+
+    protected function setTeamIds()
+    {
+        try {
+            $team_urls = $this->getHrefs(self::XPATH_TEAM_DATA);
+        } catch (\Exception $e) {
+            return;
+        }
+        foreach ($team_urls as $team_url) {
+            $this->team_ids[] = self::extractID($team_url);
+        }
+    }
+
+    protected function setTeamNames()
+    {
+        try {
+            $this->team_names = $this->getTextContent(self::XPATH_TEAM_DATA);
+        } catch (\Exception $e) {
+            return;
+        }
+    }
+
+    protected function setTeamOwners()
+    {
+        try {
+            $this->team_owners = $this->getTextContent(self::XPATH_OWNER_DATA);
+        } catch (\Exception $e) {
+            return;
+        }
+    }
+    
+    protected static function extractID($team_url)
+    {
+        $pieces = explode("/", $team_url);
+        $count  = count($pieces);
+
+        return $pieces[$count-1];
     }
 }
