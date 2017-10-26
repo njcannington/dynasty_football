@@ -9,7 +9,6 @@ abstract class Scraper extends DomDocument
     protected $html; //html extracted from scraper
     protected $url; //url useed to extract html
     protected $cookie; // cookie needed to access url
-    const VALID_ELEMENTS = "textContent,getAttribute('href')"; //elements in html that can be used to extract content
 
     public function __construct()
     {
