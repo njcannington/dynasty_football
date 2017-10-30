@@ -21,9 +21,11 @@ class Ranking extends Models
     {
         $sql = 'SELECT * FROM '.$this->table.' WHERE player like "%'.str_replace(" ", "%", $player).'%" ORDER BY updated_at DESC LIMIT 1';
         foreach ($this->db->query($sql) as $row) {
-            return ["player" => $player,
-                    "ranking" => $row["ranking"],
-                    "position" => $row["position"]];
+                $rank = $row["ranking"];
+                $position = $row["position"];
         }
+        return ["player" => $player,
+                "ranking" => (isset($rank) ? $rank : 'n/a'),
+                "position" => (isset($position) ? $position: 'n/a')];
     }
 }
