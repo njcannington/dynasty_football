@@ -16,27 +16,34 @@ abstract class DynastyLeagueFootball extends Scraper
 
     public function __construct()
     {
-        $url = $this->url;
         $config = Config::getInstance();
-        $html = self::fetchHTML($this->url, $config["dlf"]["cookie"]);
-        $this->html_dom = self::newDom($html);
-
-        $this->setPlayerNames();
-        $this->setAverages();
+        $this->cookie = $config["dlf"]["cookie"];
+        parent::__construct();
     }
 
     protected function setPlayerNames()
     {
-        $this->player_names = $this->extractTextContent(self::XPATH_PLAYER_DATA);
+        try {
+            $this->player_names = $this->getTextContent(self::XPATH_PLAYER_DATA);
+        } catch (\Exception $e) {
+            return;
+        }
     }
+
 
     protected function setAverages()
     {
-        $this->averages = $this->extractTextContent(self::XPATH_AVG_DATA);
+        try {
+            $this->averages = $this->getTextContent(self::XPATH_AVG_DATA);
+        } catch (\Exception $e) {
+            return;
+        }
     }
 
     public function getRankings()
     {
+        $this->setPlayerNames();
+        $this->setAverages();
         for ($i = 0; $i < count($this->averages); $i++) {
             $rankings[$i] = ["player" => $this->player_names[$i],
                              "average" => $this->averages[$i]];
@@ -44,4 +51,3 @@ abstract class DynastyLeagueFootball extends Scraper
         return $rankings;
     }
 }
-
