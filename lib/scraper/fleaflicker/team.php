@@ -8,7 +8,7 @@ class Team extends Scraper
 {
     protected $cookie = '';
 
-    const XPATH_STARTER_DATA = "//table[@id='table_0']/tr/td[1]/div[@class='player']/div[@class='player-name']/a";
+    const XPATH_STARTER_DATA = "//table/tr/td[1]/div[@class='player']/div[@class='player-name']/a";
 
     public function __construct($team_id)
     {
