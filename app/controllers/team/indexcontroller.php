@@ -11,6 +11,8 @@ class IndexController
         $id = $_GET["id"];
         $team = new Fleaflicker\Team($id);
         $player_names = $team->getPlayers();
+        $team_name = $team->getTeamName();
+        $owner = $team->getOwner();
 
         $rankings = [];
         $ranking = new Models\Ranking();
@@ -18,6 +20,6 @@ class IndexController
             $players[] = $ranking->getRecent($player);
         }
 
-        return compact("players");
+        return compact("players", "team_name", "owner");
     }
 }
