@@ -17,7 +17,7 @@ class Ranking extends Models
         $this->db->exec($sql);
     }
 
-    public function getRanking($player_name)
+    public function getRank($player_name)
     {
         $sql = 'SELECT ranking FROM '.$this->table.' WHERE player like "%'.str_replace(" ", "%", $player_name).'%" ORDER BY updated_at DESC LIMIT 1';
         foreach ($this->db->query($sql) as $row) {
@@ -25,5 +25,14 @@ class Ranking extends Models
         }
         
         return isset($rank) ? $rank : 'n/a';
+    }
+
+    public function getRankings($player_name)
+    {
+        $sql = 'SELECT ranking, CAST(updated_at AS DATE) FROM '.$this->table.' WHERE player like "%'.str_replace(" ", "%", $player_name).'%" ORDER BY updated_at ASC LIMIT 10';
+        foreach ($this->db->query($sql) as $row) {
+                $results[] = ["ranking" => $row["ranking"], "date" => $row["CAST(updated_at AS DATE)"]];
+        }
+        return $results;
     }
 }
