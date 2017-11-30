@@ -32,7 +32,7 @@ class Team extends Scraper
         return $players;
     }
 
-    public function getPlayerNames()
+    private function getPlayerNames()
     {
         try {
             $player_names = $this->getTextContent(self::XPATH_PLAYER_NAME_DATA);
