@@ -1,16 +1,19 @@
-<table>
+<table class="table">
+  <thead>
     <tr>
-        <th>Team</th>
-        <th>Owner</th>
+        <th scope="col">Rank</th>
+        <th scope="col">Team</th>
+        <th scope="col">Owner</th>
     </tr>
-<?php
-
-foreach ($data["teams"] as $team) {
-    echo "<tr>";
-    echo "<td><a href='/team?id={$team["id"]}'>{$team["name"]}</a></td>";
-    echo "<td>{$team["owner"]}</td>";
-    echo "<tr>";
-}
-?>
-
+  </thead>
+  <tbody>
+    <?php $i = 1; foreach ($data["teams"] as $team):?>
+        <tr scope='row'>
+        <td><?= $i ?></td>
+        <td><a href = "/team?id=<?= $team['id']; ?>"><?= $team["name"]; ?></a></td>
+        <td><?= $team["owner"]; ?></td>
+        <tr>
+        <?php $i++; ?>
+    <?php endforeach; ?>
+  </tbody>
 </table>
