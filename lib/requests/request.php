@@ -37,6 +37,11 @@ class Request
         $this->view = "/error.html";
     }
 
+    public function loadJavascript()
+    {
+        return file_get_contents(VIEWS."/javascript.js");
+    }
+
     public function getPath()
     {
         return $this->path;
