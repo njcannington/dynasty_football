@@ -1,21 +1,19 @@
-<table>
-    <thead>
+<h3><?= $data["team_name"]; ?> - <?= $data["owner"]; ?></h3>
+<table class="table">
+  <thead>
     <tr>
-        <th>Players</th>
-        <th>Position</th>
-        <th>Average</th>
+      <th scope="col">Players</th>
+      <th scope="col">Position</th>
+      <th scope="col">Average</th>
     </tr>
-    </thead>
-    <tbody>
-<?php
-foreach ($data["players"] as $player) {
-    echo "<tr>";
-    echo "<td>{$player["player"]}</td>";
-    echo "<td>{$player["position"]}</td>";
-    echo "<td>{$player["ranking"]}</td>";
-    echo "</tr>";
-}
-?>
-    </tbody>
-
+  </thead>
+  <tbody>
+    <?php foreach ($data["players"] as $player): ?>
+        <tr scope='row'>
+        <td><?= $player["player"]; ?></td>
+        <td><?= $player["position"]; ?></td>
+        <td><?= $player["ranking"]; ?></td>
+        </tr>
+    <?php endforeach; ?>
+  </tbody>
 </table>

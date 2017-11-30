@@ -8,7 +8,9 @@ class Team extends Scraper
 {
     protected $cookie = '';
 
-    const XPATH_STARTER_DATA = "//table/tr/td[1]/div[@class='player']/div[@class='player-name']/a";
+    const XPATH_PLAYER_DATA = "//div[@class='player-name']/a";
+    const XPATH_NAME_DATA = "//div[@id='top-bar']/ul/li[3]";
+    const XPATH_OWNER_DATA = "//a[@class='user-name']";
 
     public function __construct($team_id)
     {
@@ -21,11 +23,34 @@ class Team extends Scraper
     public function getPlayers()
     {
         try {
-            $players = $this->getTextContent(self::XPATH_STARTER_DATA);
+            $players = $this->getTextContent(self::XPATH_PLAYER_DATA);
         } catch (\Exception $e) {
             echo $e->getMessage();
             return;
         }
         return $players;
+    }
+
+
+    public function getTeamName()
+    {
+        try {
+            $name = $this->getTextContent(self::XPATH_NAME_DATA);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            return;
+        }
+        return $name[0];
+    }
+
+    public function getOwner()
+    {
+        try {
+            $name = $this->getTextContent(self::XPATH_OWNER_DATA);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            return;
+        }
+        return $name[0];
     }
 }
