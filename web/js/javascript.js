@@ -1,3 +1,4 @@
+// USED FOR TABLE SORTING
 function sortTable(table, col, reverse) {
     var tb = table.tBodies[0], 
         tr = Array.prototype.slice.call(tb.rows, 0),
@@ -13,7 +14,6 @@ function sortTable(table, col, reverse) {
     });
     for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]);
 }
-
 function makeSortable(table) {
     var th = table.tHead, i;
     th && (th = th.rows[0]) && (th = th.cells);
@@ -24,11 +24,32 @@ function makeSortable(table) {
         th[i].addEventListener('click', function () {sortTable(table, i, (dir = 1 - dir))});
     }(i));
 }
-
 function makeAllSortable(parent) {
     parent = parent || document.body;
     var t = parent.getElementsByTagName('table'), i = t.length;
     while (--i >= 0) makeSortable(t[i]);
 }
-
 window.onload = function () {makeAllSortable();};
+
+
+function filterThis() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("filterInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("filterTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+
+
+
