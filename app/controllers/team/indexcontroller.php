@@ -16,9 +16,9 @@ class IndexController
 
         $ranking = new Models\Ranking();
         for ($i = 0; $i < count($players); $i++) {
-            $players[$i]["ranking"] = $ranking->getRanking($players[$i]["name"]);
+            $players[$i]["ranking"] = $ranking->getRank($players[$i]["name"]);
         }
 
-        return compact("players", "team_name", "owner");
+        return compact("players", "team_name", "owner", "id");
     }
 }
