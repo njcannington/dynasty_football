@@ -10,14 +10,13 @@ class IndexController
     {
         $id = $_GET["id"];
         $team = new Fleaflicker\Team($id);
-        $player_names = $team->getPlayers();
+        $players = $team->getPlayers();
         $team_name = $team->getTeamName();
         $owner = $team->getOwner();
 
-        $rankings = [];
         $ranking = new Models\Ranking();
-        foreach ($player_names as $player) {
-            $players[] = $ranking->getRecent($player);
+        for ($i = 0; $i < count($players); $i++) {
+            $players[$i]["ranking"] = $ranking->getRanking($players[$i]["name"]);
         }
 
         return compact("players", "team_name", "owner");
