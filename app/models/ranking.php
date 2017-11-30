@@ -17,15 +17,13 @@ class Ranking extends Models
         $this->db->exec($sql);
     }
 
-    public function getRecent($player)
+    public function getRanking($player_name)
     {
-        $sql = 'SELECT * FROM '.$this->table.' WHERE player like "%'.str_replace(" ", "%", $player).'%" ORDER BY updated_at DESC LIMIT 1';
+        $sql = 'SELECT ranking FROM '.$this->table.' WHERE player like "%'.str_replace(" ", "%", $player_name).'%" ORDER BY updated_at DESC LIMIT 1';
         foreach ($this->db->query($sql) as $row) {
                 $rank = $row["ranking"];
-                $position = $row["position"];
         }
-        return ["player" => $player,
-                "ranking" => (isset($rank) ? $rank : 'n/a'),
-                "position" => (isset($position) ? $position: 'n/a')];
+        
+        return isset($rank) ? $rank : 'n/a';
     }
 }
