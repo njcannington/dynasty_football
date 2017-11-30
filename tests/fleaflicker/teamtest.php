@@ -28,4 +28,10 @@ class TeamTests extends \PHPUnit\Framework\TestCase
             $this->assertTrue(is_string($player["position"]), "position - does not return a string");
         }
     }
+
+    public function testGetTeamName()
+    {
+        $team_name = $this->team->getTeamName();
+        $this->assertTrue(is_string($team_name), "does not return a string");
+    }
 }

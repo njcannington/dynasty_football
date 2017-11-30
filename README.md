@@ -21,3 +21,9 @@ The plan is to be able to be able to compare your Fleaflicker team with other te
     <pre>RewriteRule ^(.*)$ /index.php?q=$1 [L,QSA]</pre>
 3. <strong>Ensure web server has PHP 5.6 enabled</strong>
 4. <strong>Point the DocumentRoot to the /web directory.</strong>
+
+
+## PHPUnit
+
+<strong>Since we're using a custom autoload file, be sure to include autoload.php when running phpunit</strong>
+<pre> phpunit --bootstrap autoload.php tests/path/testfile.php </pre>

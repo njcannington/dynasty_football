@@ -13,5 +13,3 @@ $autoload = function ($class) {
 };
 
 spl_autoload_register($autoload);
-
-require_once(ROOT."/vendor/autoload.php");//used for phpunit
