@@ -1,5 +1,14 @@
 <h3><?= $data["team_name"]; ?> - <?= $data["owner"]; ?></h3>
-<table class="table">
+<p>Filter By Position:
+  <select onchange="filterThis()" id="filterInput" name="position">
+    <option value="">None</option>
+    <option value="qb">QB</option>
+    <option value="wr">WR</option>
+    <option value="rb">RB</option>
+    <option value="te">TE</option>
+  </select>
+</p>
+<table class="table" id="filterTable">
   <thead>
     <tr>
       <th scope="col">Players</th>
@@ -10,7 +19,7 @@
   <tbody>
     <?php foreach ($data["players"] as $player): ?>
         <tr scope='row'>
-        <td><?= $player["name"]; ?></td>
+        <td><a href="/player?name=<?= urlencode($player['name']); ?>&team=<?= $data['id']; ?>"><?= $player["name"]; ?></a></td>
         <td><?= $player["position"]; ?></td>
         <td><?= $player["ranking"]; ?></td>
         </tr>

@@ -1,0 +1,34 @@
+<h3><?= $data["player_name"]; ?> - Current Rank: <?= $data["rank"]; ?></h3>
+<h4><a href="/team?id=<?= $data['id']; ?>"><?= $data["team_name"]; ?></a></h4>
+<canvas id="rankChart" style="height:400; width:800">
+<script>
+new Chart(document.getElementById("rankChart"), {
+  type: 'line',
+  data: {
+    labels: <?= json_encode($data["label_data"]); ?>,
+    datasets: [{ 
+        data: <?= json_encode($data["table_data"]); ?>,
+        borderColor: "#3e95cd",
+        fill: false,
+        label: <?= json_encode($data["player_name"]); ?>,
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: false,
+      text: 'Ranking History'
+    },
+    scales: {
+            yAxes: [{
+                ticks: {
+                    min:1,
+                    max:100,
+                    stepSize: 10,
+                    display: true,
+                }
+            }]
+        }
+  }
+});
+</script>
