@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!--build xml-->
+<project name="dynasty" default="build">
+    <target name="build">
+        <mkdir dir="./build"/>
+    </target>
+</project>
