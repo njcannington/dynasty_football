@@ -1,5 +1,5 @@
 <?php
-namespace Lib\Requests;
+namespace App\Lib\Requests;
 
 class RequestParser
 {

@@ -1,8 +1,8 @@
 <?php
-namespace Lib\Bootstrap;
+namespace App\Lib\Bootstrap;
 
-use Lib\Requests\Request;
-use Lib\Controllers\ControllerManager;
+use App\Lib\Requests\Request;
+use App\Lib\Controllers\ControllerManager;
 
 class Bootstrap
 {

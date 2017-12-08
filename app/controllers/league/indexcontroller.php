@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers\League;
 
-use Lib\Scraper\Fleaflicker;
+use App\Lib\Scraper\Fleaflicker;
 
 class IndexController
 {

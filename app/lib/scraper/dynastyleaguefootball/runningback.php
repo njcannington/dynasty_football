@@ -1,7 +1,7 @@
 <?php
-namespace Lib\Scraper\DynastyLeagueFootball;
+namespace App\Lib\Scraper\DynastyLeagueFootball;
 
-use Lib\Scraper\DynastyLeagueFootball\DynastyLeagueFootball;
+use App\Lib\Scraper\DynastyLeagueFootball\DynastyLeagueFootball;
 
 class Runningback extends DynastyLeagueFootball
 {

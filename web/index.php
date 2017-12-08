@@ -1,7 +1,7 @@
 <?php
 require "../autoload.php";
 
-use \Lib\Bootstrap\Bootstrap;
+use \App\Lib\Bootstrap\Bootstrap;
 
 if (!isset($_GET["q"])) {
     $uri = 'league';

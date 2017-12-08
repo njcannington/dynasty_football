@@ -1,8 +1,8 @@
 <?php
-namespace Lib\Scraper\DynastyLeagueFootball;
+namespace App\Lib\Scraper\DynastyLeagueFootball;
 
-use Lib\Scraper\Scraper;
-use Lib\Config\Config;
+use App\Lib\Scraper\Scraper;
+use App\Lib\Config\Config;
 
 abstract class DynastyLeagueFootball extends Scraper
 {
