@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers\Player;
 
-use Lib\Scraper\Fleaflicker;
+use App\Lib\Scraper\Fleaflicker;
 use App\Models;
 
 class IndexController

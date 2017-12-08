@@ -1,7 +1,7 @@
 <?php
 include "/Volumes/Projects/sites/dynasty/autoload.php";
 
-use Lib\Scraper\DynastyLeagueFootball;
+use App\Lib\Scraper\DynastyLeagueFootball;
 use App\Models;
 
 $rankings = new Models\Ranking();

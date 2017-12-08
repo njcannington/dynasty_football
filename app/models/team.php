@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use Lib\Db\Models;
+use App\Lib\Db\Models;
 
 class Team extends Models
 {

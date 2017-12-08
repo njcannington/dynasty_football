@@ -1,10 +1,10 @@
 <?php
-namespace Lib\Controllers;
+namespace App\Lib\Controllers;
 
 class ControllerManager
 {
 
-    public static function getController(\Lib\Requests\Request $request)
+    public static function getController(\App\Lib\Requests\Request $request)
     {
         $path = strtolower($request->getPath());
         $controller_name = $request->getControllerName();

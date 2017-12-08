@@ -1,7 +1,7 @@
 <?php
-namespace Lib\Db;
+namespace App\Lib\Db;
 
-use Lib\Config\Config;
+use App\Lib\Config\Config;
 use \PDO;
 
 class Db

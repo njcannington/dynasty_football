@@ -1,5 +1,5 @@
 <?php
-namespace Lib\Db;
+namespace App\Lib\Db;
 
 class Models
 {

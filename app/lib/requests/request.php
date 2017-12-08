@@ -1,7 +1,7 @@
 <?php
-namespace Lib\Requests;
+namespace App\Lib\Requests;
 
-use Lib\Requests\RequestParser;
+use App\Lib\Requests\RequestParser;
 
 class Request
 {

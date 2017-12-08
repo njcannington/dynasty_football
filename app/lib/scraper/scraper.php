@@ -1,5 +1,5 @@
 <?php
-namespace Lib\Scraper;
+namespace App\Lib\Scraper;
 
 use DomDocument;
 use DOMXPath;

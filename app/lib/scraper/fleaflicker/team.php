@@ -1,8 +1,8 @@
 <?php
-namespace Lib\Scraper\Fleaflicker;
+namespace App\Lib\Scraper\Fleaflicker;
 
-use Lib\Scraper\Scraper;
-use Lib\Config\Config;
+use App\Lib\Scraper\Scraper;
+use App\Lib\Config\Config;
 
 class Team extends Scraper
 {
