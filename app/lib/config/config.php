@@ -24,7 +24,7 @@ class Config
         if (isset($_SESSION["env"]) && $_SESSION["env"] == "dev") {
             return ROOT."/config/app.dev.ini";
         }
-        if (isset($_SERVER["SERVER_NAME"]) && strtolower(substr($_SERVER["SERVER_NAME"], -3)) == "dev") {
+        if (isset($_SERVER["SERVER_NAME"]) && strtolower(substr($_SERVER["SERVER_NAME"], -9)) == "localhost") {
             return ROOT."/config/app.dev.ini";
         } else {
             return ROOT."/config/app.ini";
