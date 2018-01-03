@@ -1,6 +1,8 @@
 .*
 config/app.dev.ini
+config/app.ini
 !/.gitignore
 vendor
 composer.lock
-
+fabfile.py
+phnix.yml
