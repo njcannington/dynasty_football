@@ -1,6 +1,9 @@
 <?php
 include "autoload.php";
 
+//set environement to dev
+$_SESSION["env"] = "dev";
+
 use App\Lib\Scraper\DynastyLeagueFootball;
 use App\Models;
 
