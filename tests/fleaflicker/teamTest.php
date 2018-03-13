@@ -3,9 +3,9 @@ namespace tests\fleaflicker;
 
 $_SESSION["env"] = "dev";
 
-use Lib\Scraper\Fleaflicker;
+use App\Lib\Scraper\Fleaflicker;
 
-class TeamTests extends \PHPUnit\Framework\TestCase
+class TeamTests extends \PHPUnit_Framework_TestCase
 {
     private $team;
 

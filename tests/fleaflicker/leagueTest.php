@@ -3,7 +3,7 @@ namespace tests\fleaflicker;
 
 $_SESSION["env"] = "dev";
 
-use Lib\Scraper\Fleaflicker;
+use App\Lib\Scraper\Fleaflicker;
 
 class LeagueTests extends \PHPUnit_Framework_TestCase
 {
