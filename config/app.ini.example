@@ -1,0 +1,15 @@
+[database]
+    host = localhost
+    username = user_name
+    password = passw0rd
+    db = mydatabase
+
+; DynastyLeagueFootball.com settings
+[dlf]
+    ; wordpress cookie
+    cookie = "wordpress_logged_in_28k23hk28s8sj7=aiasfdipousadfpuioj2o28282u2j2j2j2j; amember_ru=uname; amember_rp=a89uiaskjasfdhjkkj23hkj23; path=/; domain=.dynastyleaguefootball.com; Expires=FUTURE_DATE;"
+
+; Fleaflicker settings
+[ff]
+    type = nfl
+    league = 000000
