@@ -1,5 +1,7 @@
 <?php
-include "autoload.php";
+$root = substr(dirname(__FILE__), 0, -11);
+
+include $root."/autoload.php";
 
 //set environement to dev
 $_SESSION["env"] = "dev";
