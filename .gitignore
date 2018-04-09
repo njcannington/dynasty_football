@@ -2,6 +2,7 @@
 config/app.dev.ini
 config/app.ini
 !/.gitignore
+!/.gitattributes
 vendor
 composer.lock
 fabfile.py
