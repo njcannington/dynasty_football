@@ -13,9 +13,9 @@ class IndexController
         $team = new Fleaflicker\Team($id);
         $team_name = $team->getTeamName();
 
-        $ranking = new Models\Ranking();
-        $rank = $ranking->getRank($player_name);
-        $rankings = $ranking->getRankings($player_name);
+        $ranking = new Models\Ranking($player_name);
+        $rank = $ranking->getRank();
+        $rankings = $ranking->getRankings(10);
         foreach ($rankings as $data) {
             $table_data[] = $data["ranking"];
             $label_data[] = $data["date"];
