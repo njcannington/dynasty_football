@@ -1,3 +1,4 @@
+<?php use App\Controllers\Team\IndexController as Index?>
 <h3><?= $data["team_name"]; ?> - <?= $data["owner"]; ?></h3>
 <p>Filter By Position:
   <select onchange="filterThis()" id="filterInput" name="position">
@@ -13,7 +14,9 @@
     <tr>
       <th scope="col">Players</th>
       <th scope="col">Position</th>
-      <th scope="col">Average</th>
+      <th scope="col">Current Rank</th>
+      <th scope="col">3 Week -/+</th>
+      <th scope="col">10 Week -/+</th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +24,9 @@
         <tr scope='row'>
         <td><a href="/player?name=<?= urlencode($player['name']); ?>&team=<?= $data['id']; ?>"><?= $player["name"]; ?></a></td>
         <td><?= $player["position"]; ?></td>
-        <td><?= $player["ranking"]; ?></td>
+        <td><?= $player["rank"]; ?></td>
+        <td class='<?= Index::setColor($player["3week"]); ?>'><?= $player["3week"]; ?></td>
+        <td class='<?= Index::setColor($player["10week"]); ?>'><?= $player["10week"]; ?></td>
         </tr>
     <?php endforeach; ?>
   </tbody>

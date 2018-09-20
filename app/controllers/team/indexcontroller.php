@@ -14,11 +14,22 @@ class IndexController
         $team_name = $team->getTeamName();
         $owner = $team->getOwner();
 
-        $ranking = new Models\Ranking();
         for ($i = 0; $i < count($players); $i++) {
-            $players[$i]["ranking"] = $ranking->getRank($players[$i]["name"]);
+            $ranking = new Models\Ranking($players[$i]["name"]);
+            $players[$i]["rank"] = $ranking->getRank();
+            $players[$i]["3week"] = $ranking->getDelta(3);
+            $players[$i]["10week"] = $ranking->getDelta(10);
         }
 
         return compact("players", "team_name", "owner", "id");
+    }
+
+    public static function setColor($num)
+    {
+        if ($num > 0) {
+            return "success";
+        } elseif ($num < 0) {
+            return "danger";
+        }
     }
 }
