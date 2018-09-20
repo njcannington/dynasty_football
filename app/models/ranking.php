@@ -9,6 +9,7 @@ class Ranking extends Models
 
     public function __construct($player_name)
     {
+        parent::__construct();
         $this->player_name = $player_name;
     }
     public static function create($position, $rankings)
@@ -30,12 +31,27 @@ class Ranking extends Models
         return isset($rank) ? $rank : 'n/a';
     }
 
-    public function getRankings()
+    public function getRankings($num_of_results)
     {
-        $sql = 'SELECT ranking, CAST(updated_at AS DATE) FROM rankings WHERE player like "%'.str_replace(" ", "%", $this->player_name).'%" ORDER BY updated_at DESC LIMIT 10';
+        $sql = 'SELECT ranking, CAST(updated_at AS DATE) FROM rankings WHERE player like "%'.str_replace(" ", "%", $this->player_name).'%" ORDER BY updated_at DESC LIMIT '.$num_of_results;
         foreach ($this->db->query($sql) as $row) {
                 $results[] = ["ranking" => $row["ranking"], "date" => $row["CAST(updated_at AS DATE)"]];
         }
-        return $results;
+
+        return isset($results) ? $results : 'n/a';
+    }
+
+    public function getDelta($num_of_results)
+    {
+        $rankings = $this->getRankings($num_of_results);
+        if ($rankings != "n/a") {
+                $start = current($rankings);
+                $end = end($rankings);
+
+                return $end["ranking"]-$start["ranking"];        
+        } else {
+            return $rankings;
+        }
+
     }
 }
