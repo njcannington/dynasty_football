@@ -3,6 +3,7 @@ namespace App\Lib\Scraper\Fleaflicker;
 
 use App\Lib\Scraper\Scraper;
 use App\Lib\Config\Config;
+use App\Models;
 
 class Team extends Scraper
 {
@@ -75,5 +76,80 @@ class Team extends Scraper
             return;
         }
         return $name[0];
+    }
+
+    public function getAverage()
+    {
+        $players =  $this->addRankings();
+        $qbs = $this->getPosition($players, "QB");
+        $rbs = $this->getPosition($players, "RB");
+        $wrs = $this->getPosition($players, "WR");
+        $tes = $this->getPosition($players, "TE");
+        $scores = array_map("self::getScore", [$qbs, $rbs, $wrs]);
+        $scores[] = $this->getScore($tes);
+
+        return array_sum($scores);
+    }
+
+    private function getScore($players)
+    {
+        $score = [];
+        foreach ($players as $player) {
+            if ($player["rank"] !== "n/a") {
+                $score[] = (float)$player["rank"];
+            }
+            sort($score);
+        }
+        return $score[0]+$score[1];
+    }
+
+    private function getTEScore($players)
+    {
+        $score = [];
+        foreach ($players as $player) {
+            if ($player["rank"] !== "n/a") {
+                $score[] = (float)$player["rank"];
+            }
+            sort($score);
+        }
+        return $score[0];
+    }
+
+    private function getPosition($players, $position)
+    {
+        $callback = "self::is{$position}";
+        return array_filter($players, $callback);
+    }
+
+    private function isQB($array)
+    {
+        return $array["position"] == "QB";
+    }
+
+    private function isRB($array)
+    {
+        return $array["position"] == "RB";
+    }
+
+    private function isWR($array)
+    {
+        return $array["position"] == "WR";
+    }
+
+    private function isTE($array)
+    {
+        return $array["position"] == "TE";
+    }
+
+    private function addRankings()
+    {
+        $i = 0;
+        $players = $this->getPlayers();
+        foreach ($players as $player) {
+            $ranking = new Models\Ranking($player["name"]);
+            $players[$i]["rank"] = $ranking->getRank();
+            $i++;
+        }
+        return $players;
     }
 }
