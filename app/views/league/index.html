@@ -4,14 +4,16 @@
         <th scope="col">Rank</th>
         <th scope="col">Team</th>
         <th scope="col">Owner</th>
+        <th scope="col">Avg</th>
     </tr>
   </thead>
   <tbody>
-    <?php $i = 1; foreach ($data["teams"] as $team):?>
+    <?php $i = 1; foreach ($data["updated_teams"] as $team):?>
         <tr scope='row'>
         <td><?= $i ?></td>
         <td><a href = "/team?id=<?= $team['id']; ?>"><?= $team["name"]; ?></a></td>
         <td><?= $team["owner"]; ?></td>
+        <td><?= $team["avg"]; ?></td>
         <tr>
         <?php $i++; ?>
     <?php endforeach; ?>
