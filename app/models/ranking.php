@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Lib\Db\Models;
+use App\Lib\Db\Db;
 
 class Ranking extends Models
 {
@@ -18,7 +19,8 @@ class Ranking extends Models
         $columns = implode(",", ["player", "position", "ranking", "updated_at"]);
         $values = implode('", "', [$rankings["player"], $position, $rankings["average"], $date]);
         $sql = 'INSERT INTO rankings'.'('.$columns.') VALUES ("'.$values.'")';
-        $this->db->exec($sql);
+        $db = DB::getInstance();
+        $db->exec($sql);
     }
 
     public function getRank()
