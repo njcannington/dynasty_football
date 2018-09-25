@@ -1,8 +1,8 @@
 <?php
 namespace App\Controllers\Player;
 
-use App\Lib\Scraper\Fleaflicker;
-use App\Models;
+use App\Models\Team;
+use App\Models\Ranking;
 
 class IndexController
 {
@@ -10,10 +10,10 @@ class IndexController
     {
         $player_name = urldecode($_GET["name"]);
         $id = $_GET["team"];
-        $team = new Fleaflicker\Team($id);
+        $team = new Team($id);
         $team_name = $team->getTeamName();
 
-        $ranking = new Models\Ranking($player_name);
+        $ranking = new Ranking($player_name);
         $rank = $ranking->getScore();
         $rankings = $ranking->getScores(10);
         foreach ($rankings as $data) {

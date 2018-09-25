@@ -4,14 +4,15 @@ namespace App\Lib\Scraper;
 use DomDocument;
 use DOMXPath;
 
-abstract class Scraper extends DomDocument
+class Scraper extends DomDocument
 {
     protected $html; //html extracted from scraper
     protected $url; //url useed to extract html
     protected $cookie; // cookie needed to access url
 
-    public function __construct()
+    public function __construct($url)
     {
+        $this->url = $url;
         try {
             $this->html = $this->getHTML();
         } catch (\Exception $e) {
@@ -29,7 +30,7 @@ abstract class Scraper extends DomDocument
         $html = curl_exec($ch);
         if (!curl_errno($ch)) {
             switch ($http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
-                case 200:  # OK
+                case 200:
                     break;
                 default:
                     throw new \Exception("Unexpected HTTP code: {$http_code}");
@@ -40,15 +41,16 @@ abstract class Scraper extends DomDocument
         return $html;
     }
 
-    protected function getHrefs($xpath)
+    public function getHrefs($xpath)
     {
+        $hrefs = [];
         foreach ($this->getElements($xpath) as $element) {
             $hrefs[] = $element->getAttribute('href');
         }
         return $hrefs;
     }
 
-    protected function getTextContent($xpath)
+    public function getTextContent($xpath)
     {
         foreach ($this->getElements($xpath) as $element) {
             $text_contents[] = $element->textContent;
@@ -71,7 +73,7 @@ abstract class Scraper extends DomDocument
     protected static function newDomXPath($html)
     {
         $dom = new DomDocument();
-        libxml_use_internal_errors(true); //
+        libxml_use_internal_errors(true);
         @$dom->loadHTML($html);
 
         return new DOMXPath($dom);

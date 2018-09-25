@@ -1,16 +1,17 @@
 <?php
 namespace App\Controllers\League;
 
-use App\Lib\Scraper\Fleaflicker;
+use App\Models\League;
+use App\Models\Team;
 
 class IndexController
 {
     public function indexAction()
     {
-        $league = new Fleaflicker\League();
+        $league = new League();
         $teams = $league->getTeams();
         foreach ($teams as $team_data) {
-            $team = new Fleaflicker\Team($team_data["id"]);
+            $team = new Team($team_data["id"]);
             $team_avg = $team->getAverage();
             $team_data["avg"] = $team_avg;
             $updated_teams[]=$team_data;
