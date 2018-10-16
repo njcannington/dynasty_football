@@ -2,7 +2,7 @@
 namespace App\Controllers\Team;
 
 use App\Models\Team;
-use App\Models\Ranking;
+use App\Models\Player;
 
 class IndexController
 {
@@ -15,10 +15,10 @@ class IndexController
         $owner = $team->getOwner();
 
         for ($i = 0; $i < count($players); $i++) {
-            $ranking = new Ranking($players[$i]["name"]);
-            $players[$i]["rank"] = $ranking->getRank();
-            $players[$i]["3week"] = $ranking->getDelta(3);
-            $players[$i]["10week"] = $ranking->getDelta(10);
+            $player = new Player($players[$i]["name"]);
+            $players[$i]["score"] = $player->getScore();
+            $players[$i]["3week"] = $player->getDelta(3);
+            $players[$i]["10week"] = $player->getDelta(10);
         }
 
         return compact("players", "team_name", "owner", "id");

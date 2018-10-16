@@ -4,7 +4,6 @@ namespace App\Models;
 use App\Lib\Scraper\Scraper;
 use App\Lib\Config\Config;
 use App\Lib\Db\Models;
-use App\Models\Ranking;
 
 class Team extends Models
 {
@@ -82,13 +81,24 @@ class Team extends Models
 
     public function getAverage()
     {
-        $players =  $this->addRankings();
+        $players =  $this->addScores();
         $qbs = $this->getPosition($players, "QB");
         $rbs = $this->getPosition($players, "RB");
         $wrs = $this->getPosition($players, "WR");
         $tes = $this->getPosition($players, "TE");
         $scores = array_map("self::getScore", [$qbs, $rbs, $wrs]);
         $scores[] = $this->getScore($tes);
+        
+        $rb_flex = $this->getFlexScore($rbs);
+        $wr_flex = $this->getFlexScore($wrs);
+        $te_flex = $this->getTEFlexScore($tes);
+        $scores[] = $te_flex[0];
+
+        $flex_scores = [$wr_flex, $rb_flex];
+
+        foreach ($flex_scores as $flex_score){
+            $scores[] = $flex_score[0]+$flex_score[1];
+        }
 
         return array_sum($scores);
     }
@@ -97,24 +107,55 @@ class Team extends Models
     {
         $score = [];
         foreach ($players as $player) {
-            if ($player["rank"] !== "n/a") {
-                $score[] = (float)$player["rank"];
+            if ($player["score"] !== "n/a") {
+                $score[] = (float)$player["score"];
             }
-            sort($score);
+            rsort($score);
         }
         return $score[0]+$score[1];
+    }
+
+    private function getFlexScore($players)
+    {
+        $score = [];
+        foreach ($players as $player) {
+            if ($player["score"] !== "n/a") {
+                $score[] = (float)$player["score"];
+            }
+        }
+        sort($score);
+        array_pop($score);
+        array_pop($score);
+        rsort($score);
+
+        return $score;
     }
 
     private function getTEScore($players)
     {
         $score = [];
         foreach ($players as $player) {
-            if ($player["rank"] !== "n/a") {
-                $score[] = (float)$player["rank"];
+            if ($player["score"] !== "n/a") {
+                $score[] = (float)$player["score"];
             }
-            sort($score);
+            rsort($score);
         }
         return $score[0];
+    }
+
+    private function getTEFlexScore($players)
+    {
+        $score = [];
+        foreach ($players as $player) {
+            if ($player["score"] !== "n/a") {
+                $score[] = (float)$player["score"];
+            }
+        }
+        sort($score);
+        array_pop($score);
+        rsort($score);
+
+        return $score;
     }
 
     private function getPosition($players, $position)
@@ -143,13 +184,13 @@ class Team extends Models
         return $array["position"] == "TE";
     }
 
-    private function addRankings()
+    private function addScores()
     {
         $i = 0;
         $players = $this->getPlayers();
-        foreach ($players as $player) {
-            $ranking = new Ranking($player["name"]);
-            $players[$i]["rank"] = $ranking->getRank();
+        foreach ($players as $player_data) {
+            $player = new Player($player_data["name"]);
+            $players[$i]["score"] = $player->getScore();
             $i++;
         }
         return $players;

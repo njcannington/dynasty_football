@@ -2,7 +2,7 @@
 namespace App\Controllers\Player;
 
 use App\Models\Team;
-use App\Models\Ranking;
+use App\Models\Player;
 
 class IndexController
 {
@@ -13,10 +13,10 @@ class IndexController
         $team = new Team($id);
         $team_name = $team->getTeamName();
 
-        $ranking = new Ranking($player_name);
-        $rank = $ranking->getScore();
-        $rankings = $ranking->getScores(10);
-        foreach ($rankings as $data) {
+        $player = new Player($player_name);
+        $score = $player->getScore();
+        $scores = $player->getScores(10);
+        foreach ($scores as $data) {
             $table_data[] = $data["score"];
             $label_data[] = $data["date"];
         }
@@ -24,6 +24,6 @@ class IndexController
         $table_data = array_reverse($table_data);
         $label_data = array_reverse($label_data);
 
-        return compact('player_name', 'rank', 'id', 'team_name', 'table_data', 'label_data');
+        return compact('player_name', 'score', 'id', 'team_name', 'table_data', 'label_data');
     }
 }

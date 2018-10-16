@@ -10,9 +10,10 @@ class Scraper extends DomDocument
     protected $url; //url useed to extract html
     protected $cookie; // cookie needed to access url
 
-    public function __construct($url)
+    public function __construct($url, $cookie = null)
     {
         $this->url = $url;
+        $this->cookie = $cookie;
         try {
             $this->html = $this->getHTML();
         } catch (\Exception $e) {

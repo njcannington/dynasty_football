@@ -23,4 +23,28 @@ class Player extends Models
         
         return isset($rank) ? $rank : 'n/a';
     }
+
+    public function getScores($num_of_results)
+    {
+        $sql = 'SELECT score, CAST(updated_at AS DATE) FROM rankings WHERE player like "%'.str_replace(" ", "%", $this->player_name).'%" ORDER BY updated_at DESC LIMIT '.$num_of_results;
+        foreach ($this->db->query($sql) as $row) {
+                $results[] = ["score" => $row["score"], "date" => $row["CAST(updated_at AS DATE)"]];
+        }
+
+        return isset($results) ? $results : 'n/a';
+    }
+
+    public function getDelta($num_of_results)
+    {
+        $scores = $this->getScores($num_of_results);
+        if ($scores != "n/a") {
+                $start = current($scores);
+                $end = end($scores);
+
+                return $start["score"]-$end["score"];        
+        } else {
+            return $scores;
+        }
+
+    }
 }

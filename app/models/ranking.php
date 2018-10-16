@@ -1,79 +1,89 @@
 <?php
 namespace App\Models;
 
+use App\Lib\Scraper\Scraper;
+use App\Lib\Config\Config;
 use App\Lib\Db\Models;
 use App\Lib\Db\Db;
 
 class Ranking extends Models
 {
-    protected $player_name;
+    const XPATH_PLAYER_DATA = "//table[@id='avgTable']/tbody/tr/td[2]";
+    const XPATH_AVG_DATA = "//table[@id='avgTable']/tbody/tr/td[@class='darkerCell']";
+    const QB = "https://dynastyleaguefootball.com/rankings/qb-rankings";
+    const RB = "https://dynastyleaguefootball.com/rankings/rb-rankings";
+    const WR = "https://dynastyleaguefootball.com/rankings/wr-rankings";
+    const TE = "https://dynastyleaguefootball.com/rankings/te-rankings";
 
-    public function __construct($player_name)
+    protected $player_names;
+    protected $position;
+    protected $averages;
+    protected $scraper;
+
+    public function __construct($position)
     {
-        parent::__construct();
-        $this->player_name = $player_name;
+        $config = Config::getInstance();
+        $this->position = $position;
+        switch ($position) {
+            case 'QB':
+                $url = self::QB;
+                break;
+            case 'RB':
+                $url = self::RB;
+                break;
+            case 'WR':
+                $url = self::WR;
+                break;
+            case 'TE':
+                $url = self::TE;
+                break;
+            default:
+                return null;
+        }
+        $this->scraper = new Scraper($url,  $config["dlf"]["cookie"]);
     }
-    public static function create($position, $rankings)
+
+    public function save()
     {
         $date = date("Y-m-d H:i:s");
-        $columns = implode(",", ["player", "position", "ranking", "updated_at"]);
-        $values = implode('", "', [$rankings["player"], $position, $rankings["average"], $date]);
-        $sql = 'INSERT INTO rankings'.'('.$columns.') VALUES ("'.$values.'")';
-        $db = DB::getInstance();
-        $db->exec($sql);
+        foreach ($this->getRankings() as $rankings)
+        {
+            $score = 101-$rankings["average"];
+            $columns = implode(",", ["player", "position", "ranking", "updated_at"]);
+            $values = implode('", "', [$rankings["player"], $this->position, $score, $date]);
+            $sql = 'INSERT INTO rankings'.'('.$columns.') VALUES ("'.$values.'")';
+            $db = DB::getInstance();
+            $db->exec($sql);
+        }
     }
 
-    public function getRank()
+    protected function setPlayerNames()
     {
-        $sql = 'SELECT ranking FROM rankings WHERE player like "%'.str_replace(" ", "%", $this->player_name).'%" ORDER BY updated_at DESC LIMIT 1';
-        foreach ($this->db->query($sql) as $row) {
-                $rank = $row["ranking"];
+        try {
+            $this->player_names = $this->scraper->getTextContent(self::XPATH_PLAYER_DATA);
+        } catch (\Exception $e) {
+            return;
         }
-        
-        return isset($rank) ? $rank : 'n/a';
     }
 
-    public function getScore()
+
+    protected function setAverages()
     {
-        $sql = 'SELECT score FROM rankings WHERE player like "%'.str_replace(" ", "%", $this->player_name).'%" ORDER BY updated_at DESC LIMIT 1';
-        foreach ($this->db->query($sql) as $row) {
-                $rank = $row["score"];
+        try {
+            $this->averages = $this->scraper->getTextContent(self::XPATH_AVG_DATA);
+        } catch (\Exception $e) {
+            return;
         }
-        
-        return isset($rank) ? $rank : 'n/a';
     }
 
-    public function getRankings($num_of_results)
+    protected function getRankings()
     {
-        $sql = 'SELECT ranking, CAST(updated_at AS DATE) FROM rankings WHERE player like "%'.str_replace(" ", "%", $this->player_name).'%" ORDER BY updated_at DESC LIMIT '.$num_of_results;
-        foreach ($this->db->query($sql) as $row) {
-                $results[] = ["ranking" => $row["ranking"], "date" => $row["CAST(updated_at AS DATE)"]];
+        $this->setPlayerNames();
+        $this->setAverages();
+        for ($i = 0; $i < count($this->averages); $i++) {
+            $rankings[$i] = ["player" => $this->player_names[$i],
+                             "average" => $this->averages[$i]];
         }
-
-        return isset($results) ? $results : 'n/a';
-    }
-
-    public function getScores($num_of_results)
-    {
-        $sql = 'SELECT score, CAST(updated_at AS DATE) FROM rankings WHERE player like "%'.str_replace(" ", "%", $this->player_name).'%" ORDER BY updated_at DESC LIMIT '.$num_of_results;
-        foreach ($this->db->query($sql) as $row) {
-                $results[] = ["score" => $row["score"], "date" => $row["CAST(updated_at AS DATE)"]];
-        }
-
-        return isset($results) ? $results : 'n/a';
-    }
-
-    public function getDelta($num_of_results)
-    {
-        $rankings = $this->getRankings($num_of_results);
-        if ($rankings != "n/a") {
-                $start = current($rankings);
-                $end = end($rankings);
-
-                return $end["ranking"]-$start["ranking"];        
-        } else {
-            return $rankings;
-        }
-
+        return $rankings;
     }
 }
